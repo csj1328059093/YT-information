@@ -94,7 +94,7 @@ export default defineConfig({
       ],
     },
     {
-      name: '施工特种行业信息',
+      name: 'info',
       path: '/info',
       icon: 'dashboard',
       routes: [
@@ -103,7 +103,7 @@ export default defineConfig({
           redirect: '/info/work',
         },
         {
-          name: '行业信息',
+          name: 'work',
           icon: 'smile',
           path: '/info/work',
           component: './info/work',

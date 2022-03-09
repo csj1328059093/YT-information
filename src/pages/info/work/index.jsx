@@ -6,6 +6,7 @@ import moment from 'moment';
 import EditableLinkGroup from './components/EditableLinkGroup';
 import styles from './style.less';
 import {queryProjectNotice, queryActivities, fakeChartData} from './service';
+import {useState} from "react";
 
 const links = [
   {
@@ -83,7 +84,10 @@ const ExtraContent = () => (
 );
 
 const Workplace = () => {
-  const {loading: projectLoading, data: projectNotice = []} = useRequest(queryProjectNotice);
+  const [reflashkey, setReflashkey] = useState(0);
+  const {loading: projectLoading, data: projectNotice = []} = useRequest(queryProjectNotice, {
+    refreshDeps: [reflashkey],
+  });
   const {loading: activitiesLoading, data: activities = []} = useRequest(queryActivities);
   const {data} = useRequest(fakeChartData);
 
@@ -146,7 +150,9 @@ const Workplace = () => {
             }}
             title="最新消息"
             bordered={false}
-            extra={<Link to="/">刷新</Link>}
+            extra={<div style={{color: '#3F8BFE'}} onClick={() => {
+              setReflashkey(reflashkey + 1)
+            }}>刷新</div>}
             loading={projectLoading}
             bodyStyle={{
               padding: 0,
