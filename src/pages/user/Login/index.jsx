@@ -77,7 +77,7 @@ const Login = () => {
   return (
     <div className={styles.container}>
       <div className={styles.lang} data-lang>
-        {SelectLang && <SelectLang />}
+        {/*{SelectLang && <SelectLang />}*/}
       </div>
       <div className={styles.content}>
         <LoginForm
