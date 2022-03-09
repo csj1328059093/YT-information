@@ -48,17 +48,17 @@ const GlobalHeaderRight = () => {
         //   console.log('input', value);
         // }}
       />
+      {/*<NoticeIconView />*/}
+      <Avatar menu />
       <span
         className={styles.action}
-        onClick={() => {
-          window.open('https://pro.ant.design/docs/getting-started');
-        }}
+        // onClick={() => {
+        //   window.open('https://pro.ant.design/docs/getting-started');
+        // }}
       >
         <QuestionCircleOutlined />
       </span>
-      <NoticeIconView />
-      <Avatar menu />
-      <SelectLang className={styles.action} />
+      {/*<SelectLang className={styles.action} />*/}
     </Space>
   );
 };

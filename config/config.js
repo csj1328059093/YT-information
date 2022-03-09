@@ -65,8 +65,9 @@ export default defineConfig({
     },
     {
       path: '/dashboard',
-      name: 'dashboard',
-      icon: 'dashboard',
+      // name: 'dashboard',
+      // icon: 'dashboard',
+      layout: false,
       routes: [
         {
           path: '/dashboard',
@@ -93,9 +94,27 @@ export default defineConfig({
       ],
     },
     {
+      name: '施工特种行业信息',
+      path: '/info',
+      icon: 'dashboard',
+      routes: [
+        {
+          path: '/info',
+          redirect: '/info/work',
+        },
+        {
+          name: '行业信息',
+          icon: 'smile',
+          path: '/info/work',
+          component: './info/work',
+        },
+      ],
+    },
+    {
       path: '/form',
-      icon: 'form',
-      name: 'form',
+      // icon: 'form',
+      // name: 'form',
+      layout: false,
       routes: [
         {
           path: '/form',
@@ -123,8 +142,9 @@ export default defineConfig({
     },
     {
       path: '/list',
-      icon: 'table',
-      name: 'list',
+      // icon: 'table',
+      // name: 'list',
+      layout: false,
       routes: [
         {
           path: '/list/search',
@@ -181,8 +201,9 @@ export default defineConfig({
     },
     {
       path: '/profile',
-      name: 'profile',
-      icon: 'profile',
+      // name: 'profile',
+      // icon: 'profile',
+      layout: false,
       routes: [
         {
           path: '/profile',
@@ -203,9 +224,10 @@ export default defineConfig({
       ],
     },
     {
-      name: 'result',
-      icon: 'CheckCircleOutlined',
+      // name: 'result',
+      // icon: 'CheckCircleOutlined',
       path: '/result',
+      layout: false,
       routes: [
         {
           path: '/result',
@@ -226,9 +248,10 @@ export default defineConfig({
       ],
     },
     {
-      name: 'exception',
-      icon: 'warning',
+      // name: 'exception',
+      // icon: 'warning',
       path: '/exception',
+      layout: false,
       routes: [
         {
           path: '/exception',
@@ -278,9 +301,10 @@ export default defineConfig({
       ],
     },
     {
-      name: 'editor',
-      icon: 'highlight',
+      // name: 'editor',
+      // icon: 'highlight',
       path: '/editor',
+      layout: false,
       routes: [
         {
           path: '/editor',
@@ -308,7 +332,7 @@ export default defineConfig({
     },
     {
       path: '/',
-      redirect: '/dashboard/analysis',
+      redirect: '/info/work',
     },
     {
       component: '404',
