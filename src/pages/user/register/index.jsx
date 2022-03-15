@@ -74,7 +74,7 @@ const Register = () => {
   };
 
   const getPasswordStatus = () => {
-    let value = form.getFieldValue('password');
+    let value = form.getFieldValue('password') ? form.getFieldValue('password') : '';
     let score = zxcvbn(value).guesses_log10;
 
     if (value && score > 8) {
