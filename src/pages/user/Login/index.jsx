@@ -65,11 +65,11 @@ const Login = () => {
 
       setUserLoginState(msg);
     } catch (error) {
-      const defaultLoginFailureMessage = intl.formatMessage({
-        id: 'pages.login.failure',
-        defaultMessage: '登录失败，请重试！',
-      });
-      message.error(defaultLoginFailureMessage);
+      // const defaultLoginFailureMessage = intl.formatMessage({
+      //   id: 'pages.login.failure',
+      //   defaultMessage: '登录失败，请重试！',
+      // });
+      // message.error(defaultLoginFailureMessage);
     }
   };
 
@@ -111,42 +111,74 @@ const Login = () => {
                 defaultMessage: '账户密码登录',
               })}
             />
-            <Tabs.TabPane
-              key="mobile"
-              tab={intl.formatMessage({
-                id: 'pages.login.phoneLogin.tab',
-                defaultMessage: '手机号登录',
-              })}
-            />
+            {/*<Tabs.TabPane*/}
+            {/*  key="mobile"*/}
+            {/*  tab={intl.formatMessage({*/}
+            {/*    id: 'pages.login.phoneLogin.tab',*/}
+            {/*    defaultMessage: '手机号登录',*/}
+            {/*  })}*/}
+            {/*/>*/}
           </Tabs>
 
           {status === 'error' && loginType === 'account' && (
             <LoginMessage
               content={intl.formatMessage({
                 id: 'pages.login.accountLogin.errorMessage',
-                defaultMessage: '账户或密码错误(admin/ant.design)',
+                defaultMessage: '账户或密码错误',
               })}
             />
           )}
           {type === 'account' && (
             <>
+              {/*<ProFormText*/}
+              {/*  name="username"*/}
+              {/*  fieldProps={{*/}
+              {/*    size: 'large',*/}
+              {/*    prefix: <UserOutlined className={styles.prefixIcon}/>,*/}
+              {/*  }}*/}
+              {/*  placeholder={intl.formatMessage({*/}
+              {/*    id: 'pages.login.username.placeholder',*/}
+              {/*    defaultMessage: '用户名: admin or user',*/}
+              {/*  })}*/}
+              {/*  rules={[*/}
+              {/*    {*/}
+              {/*      required: true,*/}
+              {/*      message: (*/}
+              {/*        <FormattedMessage*/}
+              {/*          id="pages.login.username.required"*/}
+              {/*          defaultMessage="请输入用户名!"*/}
+              {/*        />*/}
+              {/*      ),*/}
+              {/*    },*/}
+              {/*  ]}*/}
+              {/*/>*/}
               <ProFormText
-                name="username"
                 fieldProps={{
                   size: 'large',
-                  prefix: <UserOutlined className={styles.prefixIcon} />,
+                  prefix: <MobileOutlined className={styles.prefixIcon} />,
                 }}
+                name="phone"
                 placeholder={intl.formatMessage({
-                  id: 'pages.login.username.placeholder',
-                  defaultMessage: '用户名: admin or user',
+                  id: 'pages.login.phoneNumber.placeholder',
+                  defaultMessage: '手机号',
                 })}
                 rules={[
                   {
                     required: true,
                     message: (
                       <FormattedMessage
-                        id="pages.login.username.required"
-                        defaultMessage="请输入用户名!"
+                        id="pages.login.phoneNumber.required"
+                        defaultMessage="请输入手机号！"
+                      />
+                    ),
+                  },
+                  {
+                    pattern:
+                      /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/,
+                    message: (
+                      <FormattedMessage
+                        id="pages.login.phoneNumber.invalid"
+                        defaultMessage="手机号格式错误！"
                       />
                     ),
                   },
@@ -274,8 +306,9 @@ const Login = () => {
               style={{
                 float: 'right',
               }}
+              href={'/user/register'}
             >
-              <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
+              <FormattedMessage id="pages.login.registerAccount" defaultMessage="注册账号" />
             </a>
           </div>
         </LoginForm>

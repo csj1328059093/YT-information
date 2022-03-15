@@ -1,12 +1,13 @@
-import {Avatar, Card, Col, List, Skeleton, Row, Statistic} from 'antd';
-import {Radar} from '@ant-design/charts';
-import {Link, useRequest} from 'umi';
-import {PageContainer} from '@ant-design/pro-layout';
+import { Avatar, Card, Col, List, Skeleton, Row, Statistic } from 'antd';
+import { Radar } from '@ant-design/charts';
+import { Link, useRequest } from 'umi';
+import { PageContainer } from '@ant-design/pro-layout';
 import moment from 'moment';
 import EditableLinkGroup from './components/EditableLinkGroup';
 import styles from './style.less';
-import {queryProjectNotice, queryActivities, fakeChartData} from './service';
-import {useState} from "react";
+import { queryProjectNotice, queryActivities, fakeChartData } from './service';
+import { useState } from 'react';
+import { getLocalStorage } from '@/utils/localstorage';
 
 const links = [
   {
@@ -35,7 +36,7 @@ const links = [
   },
 ];
 
-const PageHeaderContent = ({currentUser}) => {
+const PageHeaderContent = ({ currentUser }) => {
   const loading = currentUser && Object.keys(currentUser).length;
 
   if (!loading) {
@@ -53,12 +54,12 @@ const PageHeaderContent = ({currentUser}) => {
   return (
     <div className={styles.pageHeaderContent}>
       <div className={styles.avatar}>
-        <Avatar size="large" src={currentUser.avatar}/>
+        <Avatar size="large" src={currentUser.avatar} />
       </div>
       <div className={styles.content}>
         <div className={styles.contentTitle}>
-          早安，
-          {currentUser.name}
+          你好，
+          {currentUser.username}
           ，祝你开心每一天！
         </div>
         {/*<div>*/}
@@ -72,24 +73,25 @@ const PageHeaderContent = ({currentUser}) => {
 const ExtraContent = () => (
   <div className={styles.extraContent}>
     <div className={styles.statItem}>
-      <Statistic title="项目数" value={56}/>
+      <Statistic title="项目数" value={56} />
     </div>
     <div className={styles.statItem}>
-      <Statistic title="团队内排名" value={8} suffix="/ 24"/>
+      <Statistic title="团队内排名" value={8} suffix="/ 24" />
     </div>
     <div className={styles.statItem}>
-      <Statistic title="项目访问" value={2223}/>
+      <Statistic title="项目访问" value={2223} />
     </div>
   </div>
 );
 
 const Workplace = () => {
   const [reflashkey, setReflashkey] = useState(0);
-  const {loading: projectLoading, data: projectNotice = []} = useRequest(queryProjectNotice, {
+  const user = getLocalStorage('user');
+  const { loading: projectLoading, data: projectNotice = [] } = useRequest(queryProjectNotice, {
     refreshDeps: [reflashkey],
   });
-  const {loading: activitiesLoading, data: activities = []} = useRequest(queryActivities);
-  const {data} = useRequest(fakeChartData);
+  const { loading: activitiesLoading, data: activities = [] } = useRequest(queryActivities);
+  const { data } = useRequest(fakeChartData);
 
   const renderActivities = (item) => {
     const events = item.template.split(/@\{([^{}]*)\}/gi).map((key) => {
@@ -106,7 +108,7 @@ const Workplace = () => {
     return (
       <List.Item key={item.id}>
         <List.Item.Meta
-          avatar={<Avatar src={item.user.avatar}/>}
+          avatar={<Avatar src={item.user.avatar} />}
           title={
             <span>
               <a className={styles.username}>{item.user.name}</a>
@@ -130,12 +132,12 @@ const Workplace = () => {
         <PageHeaderContent
           currentUser={{
             avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-            name: '吴彦祖',
             userid: '00000001',
             email: 'antdesign@alipay.com',
             signature: '海纳百川，有容乃大',
             title: '交互专家',
             group: '蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED',
+            ...user,
           }}
         />
       }
@@ -150,9 +152,16 @@ const Workplace = () => {
             }}
             title="最新消息"
             bordered={false}
-            extra={<div style={{color: '#3F8BFE'}} onClick={() => {
-              setReflashkey(reflashkey + 1)
-            }}>刷新</div>}
+            extra={
+              <div
+                style={{ color: '#3F8BFE' }}
+                onClick={() => {
+                  setReflashkey(reflashkey + 1);
+                }}
+              >
+                刷新
+              </div>
+            }
             loading={projectLoading}
             bodyStyle={{
               padding: 0,
@@ -167,16 +176,14 @@ const Workplace = () => {
                   bordered={false}
                 >
                   <Card.Meta
-                    // title={
-                    //   <div className={styles.cardTitle}>
-                    //     <Avatar size="small" src={item.logo} />
-                    //     <Link to={item.href}>{item.title}</Link>
-                    //   </div>
-                    // }
+                  // title={
+                  //   <div className={styles.cardTitle}>
+                  //     <Avatar size="small" src={item.logo} />
+                  //     <Link to={item.href}>{item.title}</Link>
+                  //   </div>
+                  // }
                   />
-                  <div>
-                    {item.content}
-                  </div>
+                  <div>{item.content}</div>
                   <div className={styles.projectItemContent}>
                     <Link>{item.member || '该用户无联系方式'}</Link>
                     {item.updatedAt && (

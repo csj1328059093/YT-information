@@ -4,6 +4,7 @@ import RightContent from './components/RightContent';
 import Footer from './components/Footer';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
+
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 /** 获取用户信息比较慢的时候会展示一个 loading */
@@ -11,22 +12,27 @@ const loginPath = '/user/login';
 export const initialStateConfig = {
   loading: <PageLoading />,
 };
+
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 
+//全局初始数据
 export async function getInitialState() {
+  console.log('全局初始数据');
+
   const fetchUserInfo = async () => {
     try {
       const msg = await queryCurrentUser();
       return msg.data;
     } catch (error) {
-      history.push(loginPath);
+      // history.push(loginPath);
     }
 
     return undefined;
-  }; // 如果是登录页面，不执行
+  };
 
+  // 非登录页面执行
   if (history.location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
     return {
@@ -38,6 +44,7 @@ export async function getInitialState() {
 
   return {
     fetchUserInfo,
+    // currentUser: undefined,
     settings: {},
   };
 } // ProLayout 支持的api https://procomponents.ant.design/components/layout
@@ -52,10 +59,9 @@ export const layout = ({ initialState }) => {
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history; // 如果没有登录，重定向到 login
-
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
-        history.push(loginPath);
-      }
+      // if (!initialState?.currentUser && location.pathname !== loginPath) {
+      //   history.push(loginPath);
+      // }
     },
     // links: isDev
     //   ? [

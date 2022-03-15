@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { LoginOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Menu, Spin } from 'antd';
 import { history, useModel } from 'umi';
 import { stringify } from 'querystring';
@@ -37,6 +37,13 @@ const AvatarDropdown = ({ menu }) => {
         return;
       }
 
+      // if (key === 'login') {
+      //   history.replace({
+      //     pathname: '/user/login',
+      //   });
+      //   return;
+      // }
+
       history.push(`/account/${key}`);
     },
     [setInitialState],
@@ -59,37 +66,53 @@ const AvatarDropdown = ({ menu }) => {
 
   const { currentUser } = initialState;
 
-  if (!currentUser || !currentUser.name) {
-    return loading;
-  }
-
   const menuHeaderDropdown = (
     <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-      {menu && (
-        <Menu.Item key="center">
-          <UserOutlined />
-          个人中心
-        </Menu.Item>
-      )}
-      {menu && (
-        <Menu.Item key="settings">
-          <SettingOutlined />
-          个人设置
-        </Menu.Item>
-      )}
-      {menu && <Menu.Divider />}
-
+      {currentUser ? (
+        <>
+          {menu && (
+            <Menu.Item key="center">
+              <UserOutlined />
+              个人中心
+            </Menu.Item>
+          )}
+          {menu && (
+            <Menu.Item key="settings">
+              <SettingOutlined />
+              个人设置
+            </Menu.Item>
+          )}
+          {menu && <Menu.Divider />}
+        </>
+      ) : null}
       <Menu.Item key="logout">
-        <LogoutOutlined />
-        退出登录
+        {currentUser ? <LogoutOutlined /> : <LoginOutlined />}
+        {currentUser ? '退出登录' : '登录'}
       </Menu.Item>
     </Menu>
   );
+
+  // if (!currentUser || !currentUser.name) {
+  //   return (
+  //     <HeaderDropdown overlay={menuHeaderDropdown}>
+  //     <span className={`${styles.action} ${styles.account}`}>
+  //       <Avatar size="small" className={styles.avatar} src={'currentUser.avatar'} alt="avatar"/>
+  //       <span className={`${styles.name} anticon`}>{'currentUser.name'}</span>
+  //     </span>
+  //     </HeaderDropdown>
+  //   );
+  // }
+
   return (
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${styles.action} ${styles.account}`}>
-        <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-        <span className={`${styles.name} anticon`}>{currentUser.name}</span>
+        <Avatar
+          size="small"
+          className={styles.avatar}
+          src={currentUser ? currentUser.avatar : '/unlogin.png'}
+          alt="avatar"
+        />
+        <span className={`${styles.name} anticon`}>{'currentUser.name'}</span>
       </span>
     </HeaderDropdown>
   );
