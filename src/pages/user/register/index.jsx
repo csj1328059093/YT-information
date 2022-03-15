@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Form, Button, Col, Input, Popover, Progress, Row, Select, message } from 'antd';
-import { Link, useRequest, history, useModel } from 'umi';
+import {useState, useEffect} from 'react';
+import {Form, Button, Col, Input, Popover, Progress, Row, Select, message} from 'antd';
+import {Link, useRequest, history, useModel} from 'umi';
 import zxcvbn from 'zxcvbn';
-import { fakeRegister, checkSendNote } from './service';
+import {fakeRegister, checkSendNote} from './service';
 import styles from './style.less';
 // import {setLocalStorage, getLocalStorage} from '@/utils/localStorage.js'
 
 const FormItem = Form.Item;
-const { Option } = Select;
+const {Option} = Select;
 const InputGroup = Input.Group;
 const passwordStatusMap = {
   ok: (
@@ -47,7 +47,7 @@ const Register = () => {
     [interval],
   );
 
-  const { loading: sendNoteLoading, run: sendNote } = useRequest(checkSendNote, {
+  const {loading: sendNoteLoading, run: sendNote} = useRequest(checkSendNote, {
     manual: true,
     onSuccess: (data, params) => {
       message.success(data);
@@ -57,7 +57,7 @@ const Register = () => {
 
   const onGetCaptcha = () => {
     const phone = document.getElementById('phoneInput').value;
-    sendNote({ phone });
+    sendNote({phone});
   };
 
   const runTime = () => {
@@ -88,11 +88,11 @@ const Register = () => {
     return 'poor';
   };
 
-  const { loading: submitting, run: register } = useRequest(fakeRegister, {
+  const {loading: submitting, run: register} = useRequest(fakeRegister, {
     manual: true,
     onSuccess: (data, params) => {
-      const { msg } = data;
-      const { phone, username } = params[0];
+      const {msg} = data;
+      const {phone, username} = params[0];
       message.success(msg);
       // setLocalStorage('user', {phone, username})
 
@@ -149,7 +149,7 @@ const Register = () => {
   };
 
   const renderPasswordProgress = () => {
-    let value = form.getFieldValue('password');
+    let value = form.getFieldValue('password') ? form.getFieldValue('password') : '';
     const score = zxcvbn(value).guesses_log10;
     const passwordStatus = getPasswordStatus();
     return value && value.length ? (
@@ -167,7 +167,7 @@ const Register = () => {
 
   return (
     <div className={styles.main}>
-      <div style={{ width: 336, margin: '0 auto' }}>
+      <div style={{width: 336, margin: '0 auto'}}>
         <h1>注册</h1>
         <Form form={form} name="UserRegister" onFinish={onFinish}>
           <InputGroup compact>
@@ -199,7 +199,7 @@ const Register = () => {
                 },
               ]}
             >
-              <Input id={'phoneInput'} size="large" placeholder="手机号" />
+              <Input id={'phoneInput'} size="large" placeholder="手机号"/>
             </FormItem>
           </InputGroup>
           <Row gutter={8}>
@@ -213,7 +213,7 @@ const Register = () => {
                   },
                 ]}
               >
-                <Input size="large" placeholder="验证码" />
+                <Input size="large" placeholder="验证码"/>
               </FormItem>
             </Col>
             <Col span={8}>
@@ -300,7 +300,7 @@ const Register = () => {
               },
             ]}
           >
-            <Input size="large" type="password" placeholder="确认密码" />
+            <Input size="large" type="password" placeholder="确认密码"/>
           </FormItem>
           <FormItem
             name="username"
@@ -315,7 +315,7 @@ const Register = () => {
               // },
             ]}
           >
-            <Input size="large" placeholder="昵称" />
+            <Input size="large" placeholder="昵称"/>
           </FormItem>
           <FormItem>
             <Button
