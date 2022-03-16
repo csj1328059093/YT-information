@@ -1,16 +1,16 @@
-import { PageLoading } from '@ant-design/pro-layout';
-import { history, Link } from 'umi';
+import {PageLoading} from '@ant-design/pro-layout';
+import {history, Link} from 'umi';
 import RightContent from './components/RightContent';
 import Footer from './components/Footer';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
-import { BookOutlined, LinkOutlined } from '@ant-design/icons';
+import {currentUser as queryCurrentUser} from './services/ant-design-pro/api';
+import {BookOutlined, LinkOutlined} from '@ant-design/icons';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 /** 获取用户信息比较慢的时候会展示一个 loading */
 
 export const initialStateConfig = {
-  loading: <PageLoading />,
+  loading: <PageLoading/>,
 };
 
 /**
@@ -22,14 +22,8 @@ export async function getInitialState() {
   console.log('全局初始数据');
 
   const fetchUserInfo = async () => {
-    try {
-      const msg = await queryCurrentUser();
-      return msg.data;
-    } catch (error) {
-      // history.push(loginPath);
-    }
-
-    return undefined;
+    const msg = await queryCurrentUser();
+    return msg.data;
   };
 
   // 非登录页面执行
@@ -40,25 +34,24 @@ export async function getInitialState() {
       currentUser,
       settings: {},
     };
+  } else {
+    return {
+      fetchUserInfo,
+      settings: {},
+    };
   }
-
-  return {
-    fetchUserInfo,
-    // currentUser: undefined,
-    settings: {},
-  };
 } // ProLayout 支持的api https://procomponents.ant.design/components/layout
 
-export const layout = ({ initialState }) => {
+export const layout = ({initialState}) => {
   return {
-    rightContentRender: () => <RightContent />,
+    rightContentRender: () => <RightContent/>,
     disableContentMargin: false,
     waterMarkProps: {
       // content: initialState?.currentUser?.name,
     },
-    footerRender: () => <Footer />,
+    footerRender: () => <Footer/>,
     onPageChange: () => {
-      const { location } = history; // 如果没有登录，重定向到 login
+      const {location} = history; // 如果没有登录，重定向到 login
       // if (!initialState?.currentUser && location.pathname !== loginPath) {
       //   history.push(loginPath);
       // }

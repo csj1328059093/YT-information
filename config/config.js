@@ -1,9 +1,10 @@
 // https://umijs.org/config/
-import { defineConfig } from 'umi';
-import { join } from 'path';
+import {defineConfig} from 'umi';
+import {join} from 'path';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
-const { REACT_APP_ENV } = process.env;
+
+const {REACT_APP_ENV} = process.env;
 export default defineConfig({
   hash: true,
   antd: {},
@@ -67,7 +68,7 @@ export default defineConfig({
       path: '/dashboard',
       // name: 'dashboard',
       // icon: 'dashboard',
-      layout: false,
+      access: 'cantSee',
       routes: [
         {
           path: '/dashboard',
@@ -114,7 +115,7 @@ export default defineConfig({
       path: '/form',
       // icon: 'form',
       // name: 'form',
-      layout: false,
+      access: 'cantSee',
       routes: [
         {
           path: '/form',
@@ -144,7 +145,7 @@ export default defineConfig({
       path: '/list',
       // icon: 'table',
       // name: 'list',
-      layout: false,
+      access: 'cantSee',
       routes: [
         {
           path: '/list/search',
@@ -203,7 +204,7 @@ export default defineConfig({
       path: '/profile',
       // name: 'profile',
       // icon: 'profile',
-      layout: false,
+      access: 'cantSee',
       routes: [
         {
           path: '/profile',
@@ -227,7 +228,7 @@ export default defineConfig({
       // name: 'result',
       // icon: 'CheckCircleOutlined',
       path: '/result',
-      layout: false,
+      access: 'cantSee',
       routes: [
         {
           path: '/result',
@@ -251,7 +252,7 @@ export default defineConfig({
       // name: 'exception',
       // icon: 'warning',
       path: '/exception',
-      layout: false,
+      access: 'cantSee',
       routes: [
         {
           path: '/exception',
@@ -281,6 +282,7 @@ export default defineConfig({
       name: 'account',
       icon: 'user',
       path: '/account',
+      access: 'justSeeInLogin',
       routes: [
         {
           path: '/account',
@@ -304,7 +306,7 @@ export default defineConfig({
       // name: 'editor',
       // icon: 'highlight',
       path: '/editor',
-      layout: false,
+      access: 'cantSee',
       routes: [
         {
           path: '/editor',

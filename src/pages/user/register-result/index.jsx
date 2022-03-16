@@ -1,8 +1,8 @@
-import { Button, Result } from 'antd';
-import { Link } from 'umi';
+import {Button, Result} from 'antd';
+import {Link, useModel} from 'umi';
 import React from 'react';
 import styles from './style.less';
-import { getLocalStorage } from '@/utils/localstorage.js';
+import {getLocalStorage} from '@/utils/localstorage.js';
 
 const actions = (
   <div className={styles.actions}>
@@ -17,8 +17,8 @@ const actions = (
   </div>
 );
 
-const RegisterResult = ({ location }) => {
-  const { phone } = getLocalStorage('user');
+const RegisterResult = ({location}) => {
+  const phone = location.state ? location.state.phone : '';
   return (
     <Result
       className={styles.registerResult}

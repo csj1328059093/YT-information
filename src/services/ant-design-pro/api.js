@@ -1,23 +1,30 @@
 // @ts-ignore
 
 /* eslint-disable */
-import { request } from 'umi';
+import {request} from 'umi';
 import sha1 from 'sha1';
+import {getLocalStorage} from '@/utils/localstorage.js'
 
 /** 获取当前的用户 GET /api/currentUser */
 
 export async function currentUser(options) {
-  return request('/api/currentUser', {
-    method: 'GET',
-    ...(options || {}),
+  const sessionId = getLocalStorage('sessionId')
+  return request('http://yuetuxinxi.com:3000/api/currentUser', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: {sessionId},
   });
 }
 
 /** 退出登录接口 POST /api/login/outLogin */
 
 export async function outLogin(options) {
-  return request('/api/login/outLogin', {
+  const sessionId = getLocalStorage('sessionId')
+  return request('http://yuetuxinxi.com:3000/api/login/outLogin', {
     method: 'POST',
+    data: {sessionId},
     ...(options || {}),
   });
 }
@@ -25,13 +32,13 @@ export async function outLogin(options) {
 /** 登录接口 POST /api/login/account */
 
 export async function login(params, options) {
-  const { password, ...other } = params;
+  const {password, ...other} = params;
   return request('http://yuetuxinxi.com:3000/api/login/account', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    data: { ...other, password: sha1(password) },
+    data: {...other, password: sha1(password)},
     ...(options || {}),
   });
 }
@@ -50,7 +57,7 @@ export async function getNotices(options) {
 export async function rule(params, options) {
   return request('/api/rule', {
     method: 'GET',
-    params: { ...params },
+    params: {...params},
     ...(options || {}),
   });
 }

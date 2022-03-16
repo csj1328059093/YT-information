@@ -6,16 +6,17 @@ import {
   UserOutlined,
   WeiboCircleOutlined,
 } from '@ant-design/icons';
-import { Alert, message, Tabs } from 'antd';
-import React, { useState } from 'react';
-import { ProFormCaptcha, ProFormCheckbox, ProFormText, LoginForm } from '@ant-design/pro-form';
-import { useIntl, history, FormattedMessage, SelectLang, useModel } from 'umi';
+import {Alert, message, Tabs} from 'antd';
+import React, {useState} from 'react';
+import {ProFormCaptcha, ProFormCheckbox, ProFormText, LoginForm} from '@ant-design/pro-form';
+import {useIntl, history, FormattedMessage, SelectLang, useModel} from 'umi';
 import Footer from '../../../components/Footer';
-import { login } from '../../../services/ant-design-pro/api';
-import { getFakeCaptcha } from '../../../services/ant-design-pro/login';
+import {login} from '../../../services/ant-design-pro/api';
+import {getFakeCaptcha} from '../../../services/ant-design-pro/login';
 import styles from './index.less';
+import {setLocalStorage} from "@/utils/localstorage";
 
-const LoginMessage = ({ content }) => (
+const LoginMessage = ({content}) => (
   <Alert
     style={{
       marginBottom: 24,
@@ -29,23 +30,25 @@ const LoginMessage = ({ content }) => (
 const Login = () => {
   const [userLoginState, setUserLoginState] = useState({});
   const [type, setType] = useState('account');
-  const { initialState, setInitialState } = useModel('@@initialState');
+  const {initialState, setInitialState} = useModel('@@initialState');
   const intl = useIntl();
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
 
     if (userInfo) {
-      await setInitialState((s) => ({ ...s, currentUser: userInfo }));
+      await setInitialState((s) => ({...s, currentUser: userInfo}));
     }
   };
 
   const handleSubmit = async (values) => {
     try {
       // 登录
-      const msg = await login({ ...values, type });
+      const msg = await login({...values, type});
 
       if (msg.status === 'ok') {
+        const {sessionId} = msg
+        setLocalStorage('sessionId', sessionId)
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
@@ -55,9 +58,10 @@ const Login = () => {
         /** 此方法会跳转到 redirect 参数所在的位置 */
 
         if (!history) return;
-        const { query } = history.location;
-        const { redirect } = query;
-        history.push(redirect || '/');
+        // const {query} = history.location;
+        // const {redirect} = query;
+        // history.push(redirect || '/');
+        history.push('/');
         return;
       }
 
@@ -73,7 +77,7 @@ const Login = () => {
     }
   };
 
-  const { status, type: loginType } = userLoginState;
+  const {status, type: loginType} = userLoginState;
   return (
     <div className={styles.container}>
       <div className={styles.lang} data-lang>
@@ -81,7 +85,7 @@ const Login = () => {
       </div>
       <div className={styles.content}>
         <LoginForm
-          logo={<img alt="logo" src="/favicon.ico" />}
+          logo={<img alt="logo" src="/favicon.ico"/>}
           title="阅途信息"
           subTitle={intl.formatMessage({
             id: 'pages.layouts.userLayout.title',
@@ -155,7 +159,7 @@ const Login = () => {
               <ProFormText
                 fieldProps={{
                   size: 'large',
-                  prefix: <MobileOutlined className={styles.prefixIcon} />,
+                  prefix: <MobileOutlined className={styles.prefixIcon}/>,
                 }}
                 name="phone"
                 placeholder={intl.formatMessage({
@@ -188,7 +192,7 @@ const Login = () => {
                 name="password"
                 fieldProps={{
                   size: 'large',
-                  prefix: <LockOutlined className={styles.prefixIcon} />,
+                  prefix: <LockOutlined className={styles.prefixIcon}/>,
                 }}
                 placeholder={intl.formatMessage({
                   id: 'pages.login.password.placeholder',
@@ -209,13 +213,13 @@ const Login = () => {
             </>
           )}
 
-          {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
+          {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误"/>}
           {type === 'mobile' && (
             <>
               <ProFormText
                 fieldProps={{
                   size: 'large',
-                  prefix: <MobileOutlined className={styles.prefixIcon} />,
+                  prefix: <MobileOutlined className={styles.prefixIcon}/>,
                 }}
                 name="mobile"
                 placeholder={intl.formatMessage({
@@ -246,7 +250,7 @@ const Login = () => {
               <ProFormCaptcha
                 fieldProps={{
                   size: 'large',
-                  prefix: <LockOutlined className={styles.prefixIcon} />,
+                  prefix: <LockOutlined className={styles.prefixIcon}/>,
                 }}
                 captchaProps={{
                   size: 'large',
@@ -299,8 +303,8 @@ const Login = () => {
               marginBottom: 24,
             }}
           >
-            <ProFormCheckbox noStyle name="autoLogin">
-              <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
+            <ProFormCheckbox noStyle name="autoLogin" disabled={'disabled'}>
+              <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录"/>
             </ProFormCheckbox>
             <a
               style={{
@@ -308,12 +312,12 @@ const Login = () => {
               }}
               href={'/user/register'}
             >
-              <FormattedMessage id="pages.login.registerAccount" defaultMessage="注册账号" />
+              <FormattedMessage id="pages.login.registerAccount" defaultMessage="注册账号"/>
             </a>
           </div>
         </LoginForm>
       </div>
-      <Footer />
+      <Footer/>
     </div>
   );
 };

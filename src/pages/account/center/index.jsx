@@ -1,13 +1,14 @@
-import { PlusOutlined, HomeOutlined, ContactsOutlined, ClusterOutlined } from '@ant-design/icons';
-import { Avatar, Card, Col, Divider, Input, Row, Tag } from 'antd';
-import React, { useState, useRef } from 'react';
-import { GridContent } from '@ant-design/pro-layout';
-import { Link, useRequest } from 'umi';
+import {PlusOutlined, HomeOutlined, ContactsOutlined, ClusterOutlined} from '@ant-design/icons';
+import {Avatar, Card, Col, Divider, Input, Row, Tag} from 'antd';
+import React, {useState, useRef} from 'react';
+import {GridContent} from '@ant-design/pro-layout';
+import {Link, useModel, useRequest} from 'umi';
 import Projects from './components/Projects';
 import Articles from './components/Articles';
 import Applications from './components/Applications';
-import { queryCurrent } from './service';
+import {queryCurrent} from './service';
 import styles from './Center.less';
+
 const operationTabList = [
   {
     key: 'articles',
@@ -56,7 +57,7 @@ const operationTabList = [
   },
 ];
 
-const TagList = ({ tags }) => {
+const TagList = ({tags}) => {
   const ref = useRef(null);
   const [newTags, setNewTags] = useState([]);
   const [inputVisible, setInputVisible] = useState(false);
@@ -120,7 +121,7 @@ const TagList = ({ tags }) => {
             borderStyle: 'dashed',
           }}
         >
-          <PlusOutlined />
+          <PlusOutlined/>
         </Tag>
       )}
     </div>
@@ -128,13 +129,15 @@ const TagList = ({ tags }) => {
 };
 
 const Center = () => {
+  const {initialState, setInitialState} = useModel('@@initialState');
   const [tabKey, setTabKey] = useState('articles'); //  获取用户信息
 
-  const { data: currentUser, loading } = useRequest(() => {
-    return queryCurrent();
-  }); //  渲染用户信息
+  // const { data: currentUser, loading } = useRequest(() => {
+  //   return queryCurrent();
+  // }); //  渲染用户信息
+  const {currentUser} = initialState
 
-  const renderUserInfo = ({ title, group, geographic }) => {
+  const renderUserInfo = ({title, group, geographic}) => {
     return (
       <div className={styles.detail}>
         <p>
@@ -184,15 +187,15 @@ const Center = () => {
 
   const renderChildrenByTabKey = (tabValue) => {
     if (tabValue === 'projects') {
-      return <Projects />;
+      return <Projects/>;
     }
 
     if (tabValue === 'applications') {
-      return <Applications />;
+      return <Applications/>;
     }
 
     if (tabValue === 'articles') {
-      return <Articles />;
+      return <Articles/>;
     }
 
     return null;
@@ -201,61 +204,61 @@ const Center = () => {
   return (
     <GridContent>
       <Row gutter={24}>
-        <Col lg={7} md={24}>
+        <Col lg={7} md={24} span={24}>
           <Card
             bordered={false}
             style={{
               marginBottom: 24,
             }}
-            loading={loading}
+            // loading={loading}
           >
-            {!loading && currentUser && (
+            {currentUser && (
               <div>
                 <div className={styles.avatarHolder}>
-                  <img alt="" src={currentUser.avatar} />
-                  <div className={styles.name}>{currentUser.name}</div>
+                  <img alt="" src={currentUser.avatar}/>
+                  <div className={styles.name}>{currentUser.username}</div>
                   <div>{currentUser?.signature}</div>
                 </div>
-                {renderUserInfo(currentUser)}
-                <Divider dashed />
-                <TagList tags={currentUser.tags || []} />
-                <Divider
-                  style={{
-                    marginTop: 16,
-                  }}
-                  dashed
-                />
-                <div className={styles.team}>
-                  <div className={styles.teamTitle}>团队</div>
-                  <Row gutter={36}>
-                    {currentUser.notice &&
-                      currentUser.notice.map((item) => (
-                        <Col key={item.id} lg={24} xl={12}>
-                          <Link to={item.href}>
-                            <Avatar size="small" src={item.logo} />
-                            {item.member}
-                          </Link>
-                        </Col>
-                      ))}
-                  </Row>
-                </div>
+                {/*{renderUserInfo(currentUser)}*/}
+                {/*<Divider dashed />*/}
+                {/*<TagList tags={currentUser.tags || []} />*/}
+                {/*<Divider*/}
+                {/*  style={{*/}
+                {/*    marginTop: 16,*/}
+                {/*  }}*/}
+                {/*  dashed*/}
+                {/*/>*/}
+                {/*<div className={styles.team}>*/}
+                {/*  <div className={styles.teamTitle}>团队</div>*/}
+                {/*  <Row gutter={36}>*/}
+                {/*    {currentUser.notice &&*/}
+                {/*      currentUser.notice.map((item) => (*/}
+                {/*        <Col key={item.id} lg={24} xl={12}>*/}
+                {/*          <Link to={item.href}>*/}
+                {/*            <Avatar size="small" src={item.logo} />*/}
+                {/*            {item.member}*/}
+                {/*          </Link>*/}
+                {/*        </Col>*/}
+                {/*      ))}*/}
+                {/*  </Row>*/}
+                {/*</div>*/}
               </div>
             )}
           </Card>
         </Col>
-        <Col lg={17} md={24}>
-          <Card
-            className={styles.tabsCard}
-            bordered={false}
-            tabList={operationTabList}
-            activeTabKey={tabKey}
-            onTabChange={(_tabKey) => {
-              setTabKey(_tabKey);
-            }}
-          >
-            {renderChildrenByTabKey(tabKey)}
-          </Card>
-        </Col>
+        {/*<Col lg={17} md={24}>*/}
+        {/*  <Card*/}
+        {/*    className={styles.tabsCard}*/}
+        {/*    bordered={false}*/}
+        {/*    tabList={operationTabList}*/}
+        {/*    activeTabKey={tabKey}*/}
+        {/*    onTabChange={(_tabKey) => {*/}
+        {/*      setTabKey(_tabKey);*/}
+        {/*    }}*/}
+        {/*  >*/}
+        {/*    {renderChildrenByTabKey(tabKey)}*/}
+        {/*  </Card>*/}
+        {/*</Col>*/}
       </Row>
     </GridContent>
   );

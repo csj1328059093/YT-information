@@ -4,7 +4,7 @@ import {Link, useRequest, history, useModel} from 'umi';
 import zxcvbn from 'zxcvbn';
 import {fakeRegister, checkSendNote} from './service';
 import styles from './style.less';
-// import {setLocalStorage, getLocalStorage} from '@/utils/localStorage.js'
+import {setLocalStorage, getLocalStorage} from '@/utils/localStorage.js'
 
 const FormItem = Form.Item;
 const {Option} = Select;
@@ -33,6 +33,7 @@ const passwordProgressMap = {
 };
 
 const Register = () => {
+  const {initialState, setInitialState} = useModel('@@initialState');
   const [count, setCount] = useState(0);
   const [visible, setVisible] = useState(false);
   const [prefix, setPrefix] = useState('86');
@@ -54,6 +55,14 @@ const Register = () => {
       runTime();
     },
   });
+
+  const fetchUserInfo = async () => {
+    const userInfo = await initialState?.fetchUserInfo?.();
+
+    if (userInfo) {
+      await setInitialState((s) => ({...s, currentUser: userInfo}));
+    }
+  };
 
   const onGetCaptcha = () => {
     const phone = document.getElementById('phoneInput').value;
@@ -77,11 +86,11 @@ const Register = () => {
     let value = form.getFieldValue('password') ? form.getFieldValue('password') : '';
     let score = zxcvbn(value).guesses_log10;
 
-    if (value && score > 8) {
+    if (value && score > 8 && value.length >= 6) {
       return 'ok';
     }
 
-    if (value && score > 4) {
+    if (value && score > 4 && value.length >= 6) {
       return 'pass';
     }
 
@@ -90,23 +99,24 @@ const Register = () => {
 
   const {loading: submitting, run: register} = useRequest(fakeRegister, {
     manual: true,
-    onSuccess: (data, params) => {
-      const {msg} = data;
+    onSuccess: async (data, params) => {
+      const {msg, sessionId} = data;
       const {phone, username} = params[0];
       message.success(msg);
-      // setLocalStorage('user', {phone, username})
-
+      setLocalStorage('sessionId', sessionId)
+      await fetchUserInfo();
       history.push({
         pathname: '/user/register-result',
-        // state: {
-        //   account: params[0].phone,
-        // },
+        state: {
+          phone,
+        },
       });
     },
   });
 
   const onFinish = (values) => {
-    register(values);
+    const passScore = getPasswordStatus()
+    register({...values, passScore});
   };
 
   const checkConfirm = (_, value) => {
