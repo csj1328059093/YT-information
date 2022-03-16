@@ -172,14 +172,14 @@ const Workplace = () => {
                   <Card.Meta
                     // title={
                     //   <div className={styles.cardTitle}>
-                    //     <Avatar size="small" src={item.logo} />
-                    //     <Link to={item.href}>{item.title}</Link>
+                    //     {/*<Avatar size="small" src={item.logo} />*/}
+                    //     <Link to={item.href}>{item.username}</Link>
                     //   </div>
                     // }
                   />
                   <div>{item.content}</div>
                   <div className={styles.projectItemContent}>
-                    <span>{item.member || '该用户无联系方式'}</span>
+                    <a href={`tel:${item.member}`}>{`${item.member.substring(0,3)}****${item.member.substring(7,11)} 点击快速拨号` || '该用户无联系方式'}</a>
                     {item.updatedAt && (
                       <span className={styles.datetime} title={item.updatedAt}>
                         {moment(item.updatedAt).fromNow()}
