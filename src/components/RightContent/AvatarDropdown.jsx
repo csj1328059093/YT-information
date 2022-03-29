@@ -112,7 +112,7 @@ const AvatarDropdown = ({menu}) => {
           src={currentUser ? currentUser.avatar : '/unlogin.png'}
           alt="avatar"
         />
-        <span className={`${styles.name} anticon`}>{'currentUser.name'}</span>
+        <span className={`${styles.name} anticon`}>{currentUser?.username}</span>
       </span>
     </HeaderDropdown>
   );

@@ -1,6 +1,7 @@
-import { useIntl } from 'umi';
-import { GithubOutlined } from '@ant-design/icons';
-import { DefaultFooter } from '@ant-design/pro-layout';
+import {useIntl} from 'umi';
+import {GithubOutlined} from '@ant-design/icons';
+import {DefaultFooter} from '@ant-design/pro-layout';
+
 export default () => {
   const intl = useIntl();
   const defaultMessage = intl.formatMessage({
@@ -12,18 +13,24 @@ export default () => {
     <DefaultFooter
       copyright={`${currentYear} ${defaultMessage}`}
       links={[
+        // {
+        //   key: 'github',
+        //   title: <GithubOutlined/>,
+        //   href: 'https://github.com/csj1328059093',
+        //   blankTarget: true,
+        // },
         {
-          key: 'github',
-          title: <GithubOutlined />,
-          href: 'https://github.com/csj1328059093',
+          key: 'ba',
+          title: '桂ICP备2022001818号',
+          href: 'https://beian.miit.gov.cn/',
           blankTarget: true,
         },
-        {
-          key: 'moon-bk',
-          title: 'BLOG',
-          href: 'https://blog.csdn.net/weixin_43877799',
-          blankTarget: true,
-        },
+        // {
+        //   key: 'moon-bk',
+        //   title: 'BLOG',
+        //   href: 'https://blog.csdn.net/weixin_43877799',
+        //   blankTarget: true,
+        // },
       ]}
     />
   );

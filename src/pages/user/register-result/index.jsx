@@ -2,7 +2,6 @@ import {Button, Result} from 'antd';
 import {Link, useModel} from 'umi';
 import React from 'react';
 import styles from './style.less';
-import {getLocalStorage} from '@/utils/localstorage.js';
 
 const actions = (
   <div className={styles.actions}>

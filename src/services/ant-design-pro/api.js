@@ -3,7 +3,7 @@
 /* eslint-disable */
 import {request} from 'umi';
 import sha1 from 'sha1';
-import {getLocalStorage} from '@/utils/localstorage.js'
+import {getLocalStorage} from '@/utils/localstorage'
 
 /** 获取当前的用户 GET /api/currentUser */
 

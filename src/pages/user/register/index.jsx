@@ -1,10 +1,11 @@
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Form, Button, Col, Input, Popover, Progress, Row, Select, message} from 'antd';
 import {Link, useRequest, history, useModel} from 'umi';
 import zxcvbn from 'zxcvbn';
 import {fakeRegister, checkSendNote} from './service';
 import styles from './style.less';
-import {setLocalStorage, getLocalStorage} from '@/utils/localStorage.js'
+import {setLocalStorage, getLocalStorage} from '@/utils/localStorage'
+import Footer from "@/components/Footer";
 
 const FormItem = Form.Item;
 const {Option} = Select;
@@ -177,7 +178,7 @@ const Register = () => {
 
   return (
     <div className={styles.main}>
-      <div style={{width: 336, margin: '0 auto'}}>
+      <div style={{width: 336, margin: '0 auto', flex: 1}}>
         <h1>注册</h1>
         <Form form={form} name="UserRegister" onFinish={onFinish}>
           <InputGroup compact>
@@ -209,7 +210,7 @@ const Register = () => {
                 },
               ]}
             >
-              <Input id={'phoneInput'} size="large" placeholder="手机号"/>
+              <Input id={'phoneInput'} size="large" placeholder="手机号(发布信息唯一绑定联系方式)"/>
             </FormItem>
           </InputGroup>
           <Row gutter={8}>
@@ -343,6 +344,7 @@ const Register = () => {
           </FormItem>
         </Form>
       </div>
+      <Footer/>
     </div>
   );
 };

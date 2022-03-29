@@ -13,6 +13,7 @@ export default {
   'menu.dashboard.workplace': '工作台',
   'menu.info': '施工特种行业信息',
   'menu.info.work': '行业信息',
+  'menu.info.issuework': '发布信息',
   'menu.exception.403': '403',
   'menu.exception.404': '404',
   'menu.exception.500': '500',

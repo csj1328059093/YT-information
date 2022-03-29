@@ -1,5 +1,5 @@
 import {request} from 'umi';
-import {getLocalStorage} from "@/utils/localstorage.js";
+import {getLocalStorage} from "@/utils/localstorage";
 
 export async function queryCurrent() {
   const sessionId = getLocalStorage('sessionId')

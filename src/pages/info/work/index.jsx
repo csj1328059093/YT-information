@@ -93,48 +93,49 @@ const Workplace = () => {
   const {loading: activitiesLoading, data: activities = []} = useRequest(queryActivities);
   const {data} = useRequest(fakeChartData);
 
-  const renderActivities = (item) => {
-    const events = item.template.split(/@\{([^{}]*)\}/gi).map((key) => {
-      if (item[key]) {
-        return (
-          <a href={item[key].link} key={item[key].name}>
-            {item[key].name}
-          </a>
-        );
-      }
-
-      return key;
-    });
-    return (
-      <List.Item key={item.id}>
-        <List.Item.Meta
-          avatar={<Avatar src={item.user.avatar}/>}
-          title={
-            <span>
-              <a className={styles.username}>{item.user.name}</a>
-              &nbsp;
-              <span className={styles.event}>{events}</span>
-            </span>
-          }
-          description={
-            <span className={styles.datetime} title={item.updatedAt}>
-              {moment(item.updatedAt).fromNow()}
-            </span>
-          }
-        />
-      </List.Item>
-    );
-  };
+  // const renderActivities = (item) => {
+  //   const events = item.template.split(/@\{([^{}]*)\}/gi).map((key) => {
+  //     if (item[key]) {
+  //       return (
+  //         <a href={item[key].link} key={item[key].name}>
+  //           {item[key].name}
+  //         </a>
+  //       );
+  //     }
+  //
+  //     return key;
+  //   });
+  //   return (
+  //     <List.Item key={item.id}>
+  //       <List.Item.Meta
+  //         avatar={<Avatar src={item.user.avatar}/>}
+  //         title={
+  //           <span>
+  //             <a className={styles.username}>{item.user.name}</a>
+  //             &nbsp;
+  //             <span className={styles.event}>{events}</span>
+  //           </span>
+  //         }
+  //         description={
+  //           <span className={styles.datetime} title={item.updatedAt}>
+  //             {moment(item.updatedAt).fromNow()}
+  //           </span>
+  //         }
+  //       />
+  //     </List.Item>
+  //   );
+  // };
   const {currentUser} = initialState
   return (
     <PageContainer
-      content={
-        <PageHeaderContent
-          currentUser={currentUser ? currentUser : {
-            avatar: '/unlogin.png',
-          }}
-        />
-      }
+      content="获取工作信息，通过联系方式沟通"
+      // content={
+      //   <PageHeaderContent
+      //     currentUser={currentUser ? currentUser : {
+      //       avatar: '/unlogin.png',
+      //     }}
+      //   />
+      // }
       // extraContent={<ExtraContent />}
     >
       <Row gutter={24}>
@@ -179,7 +180,8 @@ const Workplace = () => {
                   />
                   <div>{item.content}</div>
                   <div className={styles.projectItemContent}>
-                    <a href={`tel:${item.member}`}>{`${item.member.substring(0,3)}****${item.member.substring(7,11)} 点击快速拨号` || '该用户无联系方式'}</a>
+                    <a
+                      href={`tel:${item.member}`}>{`${item.member.substring(0, 3)}****${item.member.substring(7, 11)} 点击快速拨号` || '该用户无联系方式'}</a>
                     {item.updatedAt && (
                       <span className={styles.datetime} title={item.updatedAt}>
                         {moment(item.updatedAt).fromNow()}
