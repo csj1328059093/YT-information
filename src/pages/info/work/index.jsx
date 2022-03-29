@@ -125,7 +125,7 @@ const Workplace = () => {
   //     </List.Item>
   //   );
   // };
-  const {currentUser} = initialState
+  const {currentUser} = initialState ?? {}
   return (
     <PageContainer
       content="获取工作信息，通过联系方式沟通"

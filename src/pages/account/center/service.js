@@ -3,7 +3,7 @@ import {getLocalStorage} from "@/utils/localstorage";
 
 export async function queryCurrent() {
   const sessionId = getLocalStorage('sessionId')
-  return request('http://yuetuxinxi.com:3000/api/currentUser', {
+  return request('/api/currentUser', {
     method: 'post',
     header: {
       'Content-Type': 'application/json'

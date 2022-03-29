@@ -9,7 +9,7 @@ import {getLocalStorage} from '@/utils/localstorage'
 
 export async function currentUser(options) {
   const sessionId = getLocalStorage('sessionId')
-  return request('http://yuetuxinxi.com:3000/api/currentUser', {
+  return request('/api/currentUser', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ export async function currentUser(options) {
 
 export async function outLogin(options) {
   const sessionId = getLocalStorage('sessionId')
-  return request('http://yuetuxinxi.com:3000/api/login/outLogin', {
+  return request('/api/login/outLogin', {
     method: 'POST',
     data: {sessionId},
     ...(options || {}),
@@ -33,7 +33,7 @@ export async function outLogin(options) {
 
 export async function login(params, options) {
   const {password, ...other} = params;
-  return request('http://yuetuxinxi.com:3000/api/login/account', {
+  return request('/api/login/account', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
