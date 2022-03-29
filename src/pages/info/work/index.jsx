@@ -90,8 +90,8 @@ const Workplace = () => {
   const {loading: projectLoading, data: projectNotice = []} = useRequest(queryProjectNotice, {
     refreshDeps: [reflashkey],
   });
-  const {loading: activitiesLoading, data: activities = []} = useRequest(queryActivities);
-  const {data} = useRequest(fakeChartData);
+  // const {loading: activitiesLoading, data: activities = []} = useRequest(queryActivities);
+  // const {data} = useRequest(fakeChartData);
 
   // const renderActivities = (item) => {
   //   const events = item.template.split(/@\{([^{}]*)\}/gi).map((key) => {
