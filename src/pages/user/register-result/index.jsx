@@ -18,6 +18,7 @@ const actions = (
 
 const RegisterResult = ({location}) => {
   const phone = location.state ? location.state.phone : '';
+  const msg = location.state ? location.state.msg : '';
   return (
     <Result
       className={styles.registerResult}
@@ -25,7 +26,7 @@ const RegisterResult = ({location}) => {
       title={
         <div className={styles.title}>
           <div>你的账户：{phone} </div>
-          <div>注册成功</div>
+          <div>{msg}</div>
         </div>
       }
       // subTitle="激活邮件已发送到你的邮箱中，邮件有效期为24小时。请及时登录邮箱，点击邮件中的链接激活帐户。"

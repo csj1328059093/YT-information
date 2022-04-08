@@ -110,7 +110,7 @@ const Register = () => {
         pathname: '/user/register-result',
         state: {
           phone,
-          msg: '注册成功'
+          msg: '修改成功'
         },
       });
     },
@@ -180,20 +180,9 @@ const Register = () => {
   return (
     <div className={styles.main}>
       <div style={{width: 336, margin: '0 auto', flex: 1}}>
-        <h1>注册</h1>
+        <h1>修改密码</h1>
         <Form form={form} name="UserRegister" onFinish={onFinish}>
           <InputGroup compact>
-            {/*<Select*/}
-            {/*  size="large"*/}
-            {/*  value={prefix}*/}
-            {/*  onChange={changePrefix}*/}
-            {/*  style={{*/}
-            {/*    width: '20%',*/}
-            {/*  }}*/}
-            {/*>*/}
-            {/*  <Option value="86">+86</Option>*/}
-            {/*  <Option value="87">+87</Option>*/}
-            {/*</Select>*/}
             <FormItem
               style={{
                 width: '100%',
@@ -295,7 +284,7 @@ const Register = () => {
                 }}
                 size="large"
                 type="password"
-                placeholder="至少6位密码，区分大小写"
+                placeholder="至少6位新密码，区分大小写"
               />
             </FormItem>
           </Popover>
@@ -305,7 +294,7 @@ const Register = () => {
             rules={[
               {
                 required: true,
-                message: '确认密码',
+                message: '确认新密码',
               },
               {
                 validator: checkConfirm,
@@ -313,21 +302,6 @@ const Register = () => {
             ]}
           >
             <Input size="large" type="password" placeholder="确认密码"/>
-          </FormItem>
-          <FormItem
-            name="username"
-            rules={[
-              {
-                required: true,
-                message: '请输入昵称!',
-              },
-              // {
-              //   type: 'email',
-              //   message: '邮箱地址格式错误!',
-              // },
-            ]}
-          >
-            <Input size="large" placeholder="昵称"/>
           </FormItem>
           <FormItem>
             <Button
@@ -337,7 +311,7 @@ const Register = () => {
               type="primary"
               htmlType="submit"
             >
-              <span>注册</span>
+              <span>修改密码</span>
             </Button>
             <Link className={styles.login} to="/user/login">
               <span>使用已有账户登录</span>

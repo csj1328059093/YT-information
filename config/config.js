@@ -59,6 +59,12 @@ export default defineConfig({
           component: './user/register',
         },
         {
+          name: 'updateMsg',
+          icon: 'smile',
+          path: '/user/updateMsg',
+          component: './user/updateMsg',
+        },
+        {
           component: '404',
         },
       ],

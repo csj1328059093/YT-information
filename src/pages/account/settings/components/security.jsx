@@ -21,7 +21,7 @@ const SecurityView = () => {
           {passwordStrength[passScore]}
         </>
       ),
-      // actions: [<a key="Modify">修改</a>],
+      actions: [<a key="Modify" href={'/user/updateMsg'}>修改</a>],
     },
     {
       title: '账户手机',

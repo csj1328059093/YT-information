@@ -306,14 +306,24 @@ const Login = () => {
             <ProFormCheckbox noStyle name="autoLogin" disabled={'disabled'}>
               <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录"/>
             </ProFormCheckbox>
-            <a
-              style={{
-                float: 'right',
-              }}
-              href={'/user/register'}
-            >
-              <FormattedMessage id="pages.login.registerAccount" defaultMessage="注册账号"/>
-            </a>
+            <div style={{float: 'right'}}>
+              <a
+                style={{
+                  marginRight: 10
+                }}
+                href={'/user/register'}
+              >
+                <FormattedMessage id="pages.login.registerAccount" defaultMessage="注册账号"/>
+              </a>
+              <a
+                style={{
+                  // float: 'right',
+                }}
+                href={'/user/updateMsg'}
+              >
+                <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码"/>
+              </a>
+            </div>
           </div>
         </LoginForm>
       </div>

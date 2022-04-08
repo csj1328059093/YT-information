@@ -9,7 +9,7 @@
 export default {
   dev: {
     '/api/': {
-      target: 'https://preview.pro.ant.design',
+      target: 'http://yuetuxinxi.com:3000',
       changeOrigin: true,
       pathRewrite: {
         '^': '',

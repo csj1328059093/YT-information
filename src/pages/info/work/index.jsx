@@ -1,13 +1,16 @@
-import {Avatar, Card, Col, List, Skeleton, Row, Statistic} from 'antd';
+import {Avatar, Card, Col, List, Skeleton, Row, Statistic, Button, Modal} from 'antd';
 import {Radar} from '@ant-design/charts';
-import {Link, useModel, useRequest} from 'umi';
+import {history, Link, useModel, useRequest} from 'umi';
 import {PageContainer} from '@ant-design/pro-layout';
+import {FormOutlined, QrcodeOutlined, WechatOutlined} from '@ant-design/icons'
 import moment from 'moment';
 import EditableLinkGroup from './components/EditableLinkGroup';
 import styles from './style.less';
 import {queryProjectNotice, queryActivities, fakeChartData} from './service';
 import {useState} from 'react';
 import {getLocalStorage} from '@/utils/localstorage';
+import gzh from './img/gzh.png'
+import kf from './img/kf.png'
 
 const links = [
   {
@@ -86,47 +89,15 @@ const ExtraContent = () => (
 
 const Workplace = () => {
   const {initialState, setInitialState} = useModel('@@initialState');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [imgType, setImgType] = useState(false);
   const [reflashkey, setReflashkey] = useState(0);
   const {loading: projectLoading, data: projectNotice = []} = useRequest(queryProjectNotice, {
     refreshDeps: [reflashkey],
   });
-  // const {loading: activitiesLoading, data: activities = []} = useRequest(queryActivities);
-  // const {data} = useRequest(fakeChartData);
-
-  // const renderActivities = (item) => {
-  //   const events = item.template.split(/@\{([^{}]*)\}/gi).map((key) => {
-  //     if (item[key]) {
-  //       return (
-  //         <a href={item[key].link} key={item[key].name}>
-  //           {item[key].name}
-  //         </a>
-  //       );
-  //     }
-  //
-  //     return key;
-  //   });
-  //   return (
-  //     <List.Item key={item.id}>
-  //       <List.Item.Meta
-  //         avatar={<Avatar src={item.user.avatar}/>}
-  //         title={
-  //           <span>
-  //             <a className={styles.username}>{item.user.name}</a>
-  //             &nbsp;
-  //             <span className={styles.event}>{events}</span>
-  //           </span>
-  //         }
-  //         description={
-  //           <span className={styles.datetime} title={item.updatedAt}>
-  //             {moment(item.updatedAt).fromNow()}
-  //           </span>
-  //         }
-  //       />
-  //     </List.Item>
-  //   );
-  // };
   const {currentUser} = initialState ?? {}
   return (
+
     <PageContainer
       content="获取工作信息，通过联系方式沟通"
       // content={
@@ -162,35 +133,38 @@ const Workplace = () => {
               padding: 0,
             }}
           >
-            {projectNotice.map((item) => (
-              <Card.Grid className={styles.projectGrid} key={item.id}>
-                <Card
-                  bodyStyle={{
-                    padding: 0,
-                  }}
-                  bordered={false}
-                >
-                  <Card.Meta
-                    // title={
-                    //   <div className={styles.cardTitle}>
-                    //     {/*<Avatar size="small" src={item.logo} />*/}
-                    //     <Link to={item.href}>{item.username}</Link>
-                    //   </div>
-                    // }
-                  />
-                  <div>{item.content}</div>
-                  <div className={styles.projectItemContent}>
-                    <a
-                      href={`tel:${item.member}`}>{`${item.member.substring(0, 3)}****${item.member.substring(7, 11)} 点击快速拨号` || '该用户无联系方式'}</a>
-                    {item.updatedAt && (
-                      <span className={styles.datetime} title={item.updatedAt}>
-                        {moment(item.updatedAt).fromNow()}
+            {projectNotice.map((item) => {
+              const {id, member, content, updatedAt, type, msgType, workType, area} = item
+              return (
+                <Card.Grid className={styles.projectGrid} key={id}>
+                  <Card
+                    bodyStyle={{
+                      padding: 0,
+                    }}
+                    bordered={false}
+                  >
+                    <Card.Meta
+                      // title={
+                      //   <div className={styles.cardTitle}>
+                      //     {/*<Avatar size="small" src={item.logo} />*/}
+                      //     <Link to={item.href}>{item.username}</Link>
+                      //   </div>
+                      // }
+                    />
+                    <div>{type === 1 ? `【${msgType}】【${area}】【${workType}】${content}` : content}</div>
+                    <div className={styles.projectItemContent}>
+                      <a
+                        href={`tel:${member}`}>{`${member.substring(0, 3)}****${member.substring(7, 11)} 点击快速拨号` || '该用户无联系方式'}</a>
+                      {item.updatedAt && (
+                        <span className={styles.datetime} title={item.updatedAt}>
+                        {moment(updatedAt).fromNow()}
                       </span>
-                    )}
-                  </div>
-                </Card>
-              </Card.Grid>
-            ))}
+                      )}
+                    </div>
+                  </Card>
+                </Card.Grid>
+              )
+            })}
           </Card>
           {/*<Card*/}
           {/*  bodyStyle={{*/}
@@ -274,6 +248,52 @@ const Workplace = () => {
         {/*  </Card>*/}
         {/*</Col>*/}
       </Row>
+      <div onClick={() => {
+        history.push({
+          pathname: '/info/issuework',
+        });
+      }} className={styles.rightIcon} style={{bottom: 250}}>
+        <FormOutlined style={{fontSize: '30px', color: 'white'}}/>
+        <div style={{color: 'white'}}>发布信息</div>
+      </div>
+      <div
+        onClick={() => {
+          setIsModalVisible(true)
+          setImgType(true)
+        }}
+        className={styles.rightIcon}
+        style={{bottom: 150}}>
+        <QrcodeOutlined style={{fontSize: '30px', color: 'white'}}/>
+        <div style={{color: 'white'}}>公众号</div>
+      </div>
+      <div
+        onClick={() => {
+          setIsModalVisible(true)
+          setImgType(false)
+        }}
+        className={styles.rightIcon}
+        style={{bottom: 50}}>
+        <WechatOutlined style={{fontSize: '30px', color: 'white'}}/>
+        <div style={{color: 'white'}}>联系我们</div>
+      </div>
+      <Modal
+        footer={[
+          <Button key="submit" type="primary" onClick={() => {
+            setIsModalVisible(false);
+          }}>
+            确定
+          </Button>,
+        ]}
+        visible={isModalVisible}
+        closable={false}
+      >
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          {
+            imgType ? <img src={gzh} style={{width: '80%'}} alt=""/> : <img src={kf} style={{width: '80%'}} alt=""/>
+          }
+
+        </div>
+      </Modal>
     </PageContainer>
   );
 };
