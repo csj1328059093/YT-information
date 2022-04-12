@@ -1,4 +1,4 @@
-import {Avatar, Card, Col, List, Skeleton, Row, Statistic, Button, Modal} from 'antd';
+import {Avatar, Card, Col, List, Skeleton, Row, Statistic, Button, Modal, Input} from 'antd';
 import {Radar} from '@ant-design/charts';
 import {history, Link, useModel, useRequest} from 'umi';
 import {PageContainer} from '@ant-design/pro-layout';
@@ -107,8 +107,9 @@ const Workplace = () => {
   const [imgType, setImgType] = useState(false);
   const [reflashkey, setReflashkey] = useState(0);
   const [filterParmas, setFilterParmas] = useState({});
+  const [searchText, setSearchText] = useState('');
   const {loading: projectLoading, data: projectNotice = []} = useRequest(() => {
-    return queryProjectNotice(filterParmas)
+    return queryProjectNotice({searchText})
   }, {
     refreshDeps: [reflashkey],
   });
@@ -135,56 +136,69 @@ const Workplace = () => {
       // }
       // extraContent={<ExtraContent />}
     >
+      <Input.Search
+        placeholder="请输入"
+        enterButton="搜索"
+        size="large"
+        value={searchText}
+        onChange={(e) => {
+          setSearchText(e.target.value);
+        }}
+        onSearch={(e) => {
+          setReflashkey(reflashkey + 1)
+        }}
+        style={{maxWidth: 522, width: '100%', marginBottom: 10}}
+      />
       <Row gutter={24}>
-        <LightFilter
-          onFinish={(values) => {
-            setFilterParmas(values)
-            setReflashkey(reflashkey + 1);
-          }}
-          style={{
-            backgroundColor: 'white',
-            position: 'absolute',
-            zIndex: 1,
-            left: 50,
-            top: 12,
-            color: '#3F8BFE'
-          }}
-          collapse
-          collapseLabel={
-            <div>
-              <FilterOutlined/>
-              <span style={{marginLeft: 5}}>
-                筛选
-              </span>
-            </div>
-          }
-          // footerRender={false}
-        >
-          <ProFormRadio.Group
-            options={[
-              {
-                value: '1',
-                label: '招工',
-              },
-              {
-                value: '2',
-                label: '找工作',
-              },
-            ]}
-            label="信息类型"
-            name="msgType"
-          />
-          <ProFormSelect
-            options={worktype}
-            name="workType"
-            label="工种"
-          />
-          <ProFormCascader
-            request={async () => city}
-            name="area"
-            label="地区"
-          />
-        </LightFilter>
+        {/*<LightFilter*/}
+        {/*  onFinish={(values) => {*/}
+        {/*    setFilterParmas(values)*/}
+        {/*    setReflashkey(reflashkey + 1);*/}
+        {/*  }}*/}
+        {/*  style={{*/}
+        {/*    backgroundColor: 'white',*/}
+        {/*    position: 'absolute',*/}
+        {/*    zIndex: 1,*/}
+        {/*    left: 50,*/}
+        {/*    top: 12,*/}
+        {/*    color: '#3F8BFE'*/}
+        {/*  }}*/}
+        {/*  collapse*/}
+        {/*  collapseLabel={*/}
+        {/*    <div>*/}
+        {/*      <FilterOutlined/>*/}
+        {/*      <span style={{marginLeft: 5}}>*/}
+        {/*        筛选*/}
+        {/*      </span>*/}
+        {/*    </div>*/}
+        {/*  }*/}
+        {/*  // footerRender={false}*/}
+        {/*>*/}
+        {/*  <ProFormRadio.Group*/}
+        {/*    options={[*/}
+        {/*      {*/}
+        {/*        value: '1',*/}
+        {/*        label: '招工',*/}
+        {/*      },*/}
+        {/*      {*/}
+        {/*        value: '2',*/}
+        {/*        label: '找工作',*/}
+        {/*      },*/}
+        {/*    ]}*/}
+        {/*    label="信息类型"*/}
+        {/*    name="msgType"*/}
+        {/*  />*/}
+        {/*  <ProFormSelect*/}
+        {/*    options={worktype}*/}
+        {/*    name="workType"*/}
+        {/*    label="工种"*/}
+        {/*  />*/}
+        {/*  <ProFormCascader*/}
+        {/*    request={async () => city}*/}
+        {/*    name="area"*/}
+        {/*    label="地区"*/}
+        {/*  />*/}
+        {/*</LightFilter>*/}
         <Col xl={16} lg={24} md={24} sm={24} xs={24}>
           <Card
             className={styles.projectList}
