@@ -2,15 +2,25 @@ import {Avatar, Card, Col, List, Skeleton, Row, Statistic, Button, Modal} from '
 import {Radar} from '@ant-design/charts';
 import {history, Link, useModel, useRequest} from 'umi';
 import {PageContainer} from '@ant-design/pro-layout';
-import {FormOutlined, QrcodeOutlined, WechatOutlined} from '@ant-design/icons'
+import {FilterOutlined, FormOutlined, QrcodeOutlined, WechatOutlined} from '@ant-design/icons'
 import moment from 'moment';
 import EditableLinkGroup from './components/EditableLinkGroup';
 import styles from './style.less';
 import {queryProjectNotice, queryActivities, fakeChartData} from './service';
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {getLocalStorage} from '@/utils/localstorage';
 import gzh from './img/gzh.png'
 import kf from './img/kf.png'
+import ProForm, {
+  ProFormText,
+  QueryFilter,
+  ProFormDatePicker,
+  ProFormRadio,
+  ProFormSelect,
+  LightFilter, ProFormCascader
+} from "@ant-design/pro-form";
+import city from "@/utils/city";
+import worktype from "@/utils/worktype";
 
 const links = [
   {
@@ -87,19 +97,35 @@ const ExtraContent = () => (
   </div>
 );
 
+const filter = () => {
+
+}
+
 const Workplace = () => {
   const {initialState, setInitialState} = useModel('@@initialState');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [imgType, setImgType] = useState(false);
   const [reflashkey, setReflashkey] = useState(0);
-  const {loading: projectLoading, data: projectNotice = []} = useRequest(queryProjectNotice, {
+  const [filterParmas, setFilterParmas] = useState({});
+  const {loading: projectLoading, data: projectNotice = []} = useRequest(() => {
+    return queryProjectNotice(filterParmas)
+  }, {
     refreshDeps: [reflashkey],
   });
   const {currentUser} = initialState ?? {}
   return (
 
     <PageContainer
-      content="获取工作信息，通过联系方式沟通"
+      content={
+        <>
+          <div style={{marginBottom: 10}}>
+            获取工作信息，通过联系方式沟通。
+          </div>
+          <div style={{color: 'red'}}>
+            信息来源于用户，谨防上当受骗。
+          </div>
+        </>
+      }
       // content={
       //   <PageHeaderContent
       //     currentUser={currentUser ? currentUser : {
@@ -110,13 +136,62 @@ const Workplace = () => {
       // extraContent={<ExtraContent />}
     >
       <Row gutter={24}>
+        <LightFilter
+          onFinish={(values) => {
+            setFilterParmas(values)
+            setReflashkey(reflashkey + 1);
+          }}
+          style={{
+            backgroundColor: 'white',
+            position: 'absolute',
+            zIndex: 1,
+            left: 50,
+            top: 12,
+            color: '#3F8BFE'
+          }}
+          collapse
+          collapseLabel={
+            <div>
+              <FilterOutlined/>
+              <span style={{marginLeft: 5}}>
+                筛选
+              </span>
+            </div>
+          }
+          // footerRender={false}
+        >
+          <ProFormRadio.Group
+            options={[
+              {
+                value: '1',
+                label: '招工',
+              },
+              {
+                value: '2',
+                label: '找工作',
+              },
+            ]}
+            label="信息类型"
+            name="msgType"
+          />
+          <ProFormSelect
+            options={worktype}
+            name="workType"
+            label="工种"
+          />
+          <ProFormCascader
+            request={async () => city}
+            name="area"
+            label="地区"
+          />
+        </LightFilter>
         <Col xl={16} lg={24} md={24} sm={24} xs={24}>
           <Card
             className={styles.projectList}
             style={{
               marginBottom: 24,
             }}
-            title="最新消息"
+            // title="最新消息"
             bordered={false}
             extra={
               <div
@@ -151,7 +226,7 @@ const Workplace = () => {
                       //   </div>
                       // }
                     />
-                    <div>{type === 1 ? `【${msgType}】【${area}】【${workType}】${content}` : content}</div>
+                    <div>{type === 1 ? `${msgType}，${area}，${workType}，${content}` : content}</div>
                     <div className={styles.projectItemContent}>
                       <a
                         href={`tel:${member}`}>{`${member.substring(0, 3)}****${member.substring(7, 11)} 点击快速拨号` || '该用户无联系方式'}</a>
@@ -166,87 +241,7 @@ const Workplace = () => {
               )
             })}
           </Card>
-          {/*<Card*/}
-          {/*  bodyStyle={{*/}
-          {/*    padding: 0,*/}
-          {/*  }}*/}
-          {/*  bordered={false}*/}
-          {/*  className={styles.activeCard}*/}
-          {/*  title="动态"*/}
-          {/*  loading={activitiesLoading}*/}
-          {/*>*/}
-          {/*  <List*/}
-          {/*    loading={activitiesLoading}*/}
-          {/*    renderItem={(item) => renderActivities(item)}*/}
-          {/*    dataSource={activities}*/}
-          {/*    className={styles.activitiesList}*/}
-          {/*    size="large"*/}
-          {/*  />*/}
-          {/*</Card>*/}
         </Col>
-        {/*<Col xl={8} lg={24} md={24} sm={24} xs={24}>*/}
-        {/*  <Card*/}
-        {/*    style={{*/}
-        {/*      marginBottom: 24,*/}
-        {/*    }}*/}
-        {/*    title="快速开始 / 便捷导航"*/}
-        {/*    bordered={false}*/}
-        {/*    bodyStyle={{*/}
-        {/*      padding: 0,*/}
-        {/*    }}*/}
-        {/*  >*/}
-        {/*    <EditableLinkGroup onAdd={() => {}} links={links} linkElement={Link} />*/}
-        {/*  </Card>*/}
-        {/*  <Card*/}
-        {/*    style={{*/}
-        {/*      marginBottom: 24,*/}
-        {/*    }}*/}
-        {/*    bordered={false}*/}
-        {/*    title="XX 指数"*/}
-        {/*    loading={data?.radarData?.length === 0}*/}
-        {/*  >*/}
-        {/*    <div className={styles.chart}>*/}
-        {/*      <Radar*/}
-        {/*        height={343}*/}
-        {/*        data={data?.radarData || []}*/}
-        {/*        angleField="label"*/}
-        {/*        seriesField="name"*/}
-        {/*        radiusField="value"*/}
-        {/*        area={{*/}
-        {/*          visible: false,*/}
-        {/*        }}*/}
-        {/*        point={{*/}
-        {/*          visible: true,*/}
-        {/*        }}*/}
-        {/*        legend={{*/}
-        {/*          position: 'bottom-center',*/}
-        {/*        }}*/}
-        {/*      />*/}
-        {/*    </div>*/}
-        {/*  </Card>*/}
-        {/*  <Card*/}
-        {/*    bodyStyle={{*/}
-        {/*      paddingTop: 12,*/}
-        {/*      paddingBottom: 12,*/}
-        {/*    }}*/}
-        {/*    bordered={false}*/}
-        {/*    title="团队"*/}
-        {/*    loading={projectLoading}*/}
-        {/*  >*/}
-        {/*    <div className={styles.members}>*/}
-        {/*      <Row gutter={48}>*/}
-        {/*        {projectNotice.map((item) => (*/}
-        {/*          <Col span={12} key={`members-item-${item.id}`}>*/}
-        {/*            <Link to={item.href}>*/}
-        {/*              <Avatar src={item.logo} size="small" />*/}
-        {/*              <span className={styles.member}>{item.member}</span>*/}
-        {/*            </Link>*/}
-        {/*          </Col>*/}
-        {/*        ))}*/}
-        {/*      </Row>*/}
-        {/*    </div>*/}
-        {/*  </Card>*/}
-        {/*</Col>*/}
       </Row>
       <div onClick={() => {
         history.push({
