@@ -7,7 +7,7 @@ const Settings = {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: '阅途信息',
+  title: '你好工友',
   pwa: false,
   logo: '/favicon.ico',
   iconfontUrl: '',

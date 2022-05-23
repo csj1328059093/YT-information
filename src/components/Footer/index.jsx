@@ -19,12 +19,12 @@ export default () => {
         //   href: 'https://github.com/csj1328059093',
         //   blankTarget: true,
         // },
-        {
-          key: 'ba',
-          title: '桂ICP备2022001818号',
-          href: 'https://beian.miit.gov.cn/',
-          blankTarget: true,
-        },
+        // {
+        //   key: 'ba',
+        //   title: '桂ICP备2022001818号',
+        //   href: 'https://beian.miit.gov.cn/',
+        //   blankTarget: true,
+        // },
         // {
         //   key: 'moon-bk',
         //   title: 'BLOG',
